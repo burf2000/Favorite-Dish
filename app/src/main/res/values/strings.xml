@@ -32,4 +32,24 @@
     <string name="err_msg_select_dish_cooking_time">Select dish cooking time.</string>
     <string name="err_msg_enter_dish_cooking_instructions">Enter dish cooking instructions.</string>
     <string name="no_dishes_added_yet">No dishes added yet</string>
+
+    <string name="no_fav_dishes_added_yet">No favorite dishes added yet</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dish_details">Dish Details</string>
+    <string name="lbl_estimate_cooking_time">the approx time required to cook the dish is %1$s minutes</string>
+    <string name="action_edit_dish">Edit Dish</string>
+    <string name="action_delete_dish">Delete Dish</string>
+
+    <string name="edit_dish">Edit Dish</string>
+    <string name="add_dish">Add Dish</string>
+    <string name="update_dish">Update Dish</string>
+
+    <string name="delete_dish">Delete Dish</string>
+    <string name="delete_dish_confirm">Are you sure you want to delete %1$s.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="filter_dishes">Filter Dishes</string>
+    <string name="select_item_to_filter">SELECT ITEM TO FILTER</string>
 </resources>

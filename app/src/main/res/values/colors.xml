@@ -20,6 +20,9 @@
     <color name="secondary_light_color">#B2FAB4</color>
     <color name="dish_image_background">#e1e1e1</color>
 
+    <color name="blue_grey_900">#263238</color>
+    <color name="grey_500">#9e9e9e</color>
+
     <color name="blue_grey_700">#37474f</color>
     <color name="grey_900">#212121</color>
     <color name="divider_line_color">#e0e0e0</color>

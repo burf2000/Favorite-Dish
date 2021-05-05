@@ -3,11 +3,16 @@ package com.burf.favdish.view.adapters
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.burf.favdish.databinding.ItemCustomListBinding
 import com.burf.favdish.view.activities.AddUpdateDishActivity
+import com.burf.favdish.view.fragments.AllDishesFragment
 
-class CustomListItemAdapter (private val activity: Activity, private val listItems: List<String>, private val selction: String)
+class CustomListItemAdapter (private val activity: Activity,
+                             private val fragment: Fragment?,
+                             private val listItems: List<String>,
+                             private val selction: String)
     : RecyclerView.Adapter<CustomListItemAdapter.ViewHolder>(){
 
     class ViewHolder(view: ItemCustomListBinding): RecyclerView.ViewHolder(view.root) {
@@ -32,6 +37,10 @@ class CustomListItemAdapter (private val activity: Activity, private val listIte
         holder.itemView.setOnClickListener() {
             if (activity is AddUpdateDishActivity) {
                 activity.selectedListItem(item, selction)
+            }
+            if(fragment is AllDishesFragment) {
+                // this is why we have the fragment
+                fragment.filterSelection(item)
             }
         }
     }

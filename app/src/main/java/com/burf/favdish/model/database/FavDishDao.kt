@@ -1,9 +1,6 @@
 package com.burf.favdish.model.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.burf.favdish.model.entities.FavDish
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +13,15 @@ interface FavDishDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFavDishDetails(favDish: FavDish)
 
-//    @Query("DELETE FROM word_table")
-//    suspend fun deleteAll()
+    @Update
+    suspend fun updateFavDishDetails(favDish: FavDish)
+
+    @Query("SELECT * FROM FAV_DISHES_TABLE WHERE favorite_dish = 1")
+    fun getFavoriteDishesList(): Flow<List<FavDish>>
+
+    @Query("SELECT * FROM FAV_DISHES_TABLE WHERE type = :filterType")
+    fun getFilteredDishesList(filterType: String): Flow<List<FavDish>>
+
+    @Delete
+    suspend fun deleteFavDishDetails(favDish: FavDish)
 }

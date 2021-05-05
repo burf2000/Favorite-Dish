@@ -11,6 +11,10 @@ class FavDishRepository(private val favDishDao: FavDishDao) {
     // Observed Flow will notify the observer when the data has changed.
     val allDishesList: Flow<List<FavDish>> = favDishDao.getAllDishesList()
 
+    val favoriteDishesList: Flow<List<FavDish>> = favDishDao.getFavoriteDishesList()
+
+    fun filteredListDishes(value : String) : Flow<List<FavDish>> = favDishDao.getFilteredDishesList(value)
+
     // By default Room runs suspend queries off the main thread, therefore, we don't need to
     // implement anything else to ensure we're not doing long running database work
     // off the main thread.
@@ -18,5 +22,15 @@ class FavDishRepository(private val favDishDao: FavDishDao) {
     @WorkerThread
     suspend fun insertFavDishData(favDish: FavDish) {
         favDishDao.insertFavDishDetails(favDish)
+    }
+
+    @WorkerThread
+    suspend fun  updateDishData(favDish: FavDish) {
+        favDishDao.updateFavDishDetails(favDish)
+    }
+
+    @WorkerThread
+    suspend fun  deleteDishData(favDish: FavDish) {
+        favDishDao.deleteFavDishDetails(favDish)
     }
 }

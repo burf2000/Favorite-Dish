@@ -46,6 +46,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import java.io.*
 import java.util.*
+import kotlin.time.measureTimedValue
 
 class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -56,6 +57,8 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
     private val mFavDishViewModel : FavDishViewModel by viewModels {
         FavDishViewModelFactory((application as FavDishApplication).repository)
     }
+
+    private var mFavDishDetails : FavDish? = null
 
     companion object {
         const val CAMERA_RESULT = 99
@@ -71,19 +74,53 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
         mBinding = ActivityAddUpdateDishBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
+        // check for edit
+        if (intent.hasExtra(Constants.EXTRA_DISH_DETAILS)) {
+            mFavDishDetails = intent.getParcelableExtra(Constants.EXTRA_DISH_DETAILS)
+        }
+
         setupActionBar()
 
-        mBinding.ivAddDishImage.setOnClickListener(this)
+        mFavDishDetails?.let {
+            if (it.id != 0) {
+                mImagePath = it.image
+                Glide.with(this@AddUpdateDishActivity)
+                    .load(mImagePath)
+                    .centerCrop()
+                    .into(mBinding.ivDishImage)
 
+                mBinding.etTitle.setText(it.title)
+                mBinding.etType.setText(it.type)
+                mBinding.etCategory.setText(it.category)
+                mBinding.etIngredients.setText(it.ingredients)
+                mBinding.etCookingTime.setText(it.cookingTime)
+                mBinding.etDirectionToCook.setText(it.directionToCook)
+
+                mBinding.btnAddDish.text = getString(R.string.update_dish)
+            }
+        }
+
+        mBinding.ivAddDishImage.setOnClickListener(this)
         mBinding.etType.setOnClickListener(this)
         mBinding.etCategory.setOnClickListener(this)
         mBinding.etCookingTime.setOnClickListener(this)
-
         mBinding.btnAddDish.setOnClickListener(this)
     }
 
     private fun setupActionBar() {
         setSupportActionBar(mBinding.toolbarAddDishActivity)
+
+        // Set title
+        if (mFavDishDetails !=null && mFavDishDetails!!.id != 0) {
+            supportActionBar?.let {
+                it.title = getString(R.string.edit_dish)
+            }
+        } else {
+            supportActionBar?.let {
+                it.title = getString(R.string.add_dish)
+            }
+        }
+
         //back button?
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mBinding.toolbarAddDishActivity.setNavigationOnClickListener {
@@ -98,7 +135,6 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                     customImageSelectionDialog()
                     return
                 }
-
                 R.id.et_type -> {
                     customItemDialog(resources.getString(R.string.title_select_dish_type), Constants.dishTypes(), Constants.DISH_TYPE )
                     return
@@ -174,26 +210,52 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                             ).show()
                         }
                         else -> {
+
+                            var dishId = 0
+                            var imageSource = Constants.DISH_IMAGE_SOURCE_LOCAL
+                            var favoriteDish = false
+
+                            mFavDishDetails?.let {
+                                if(it.id != 0) {
+                                    dishId = it.id
+                                    imageSource = it.imageSource
+                                    favoriteDish = it.favoriteDish
+                                }
+                            }
+
                             val favDishDetails: FavDish = FavDish(
                                 mImagePath,
-                                Constants.DISH_IMAGE_SOURCE_LOCAL,
+                                imageSource,
                                 title,
                                 type,
                                 category,
                                 ingredients,
                                 cookingTimeInMinutes,
                                 cookingDirection,
-                                false
+                                favoriteDish,
+                                dishId
                             )
 
-                            mFavDishViewModel.insert(favDishDetails)
+                            if(dishId == 0) {
+                                mFavDishViewModel.insert(favDishDetails)
 
-                            Toast.makeText(
-                                this@AddUpdateDishActivity,
-                                "you successfully added your favorite dish details",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            Log.e("Insertion", "Success")
+                                Toast.makeText(
+                                    this@AddUpdateDishActivity,
+                                    "you successfully added your favorite dish details",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.e("Insertion", "Success")
+
+                            } else {
+                                mFavDishViewModel.update(favDishDetails)
+                                Toast.makeText(
+                                    this@AddUpdateDishActivity,
+                                    "you successfully updated your favorite dish details",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.e("Updated", "Success")
+                            }
+
 
                             // Finish the Activity
                             finish()
@@ -374,7 +436,7 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvTitle.text = title
         binding.rvList.layoutManager = LinearLayoutManager(this)
 
-        val adapter = CustomListItemAdapter(this, itemsList, selection)
+        val adapter = CustomListItemAdapter(this, null, itemsList, selection)
         binding.rvList.adapter = adapter
 
         mCustomListDialog.show()
