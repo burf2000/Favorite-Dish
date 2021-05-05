@@ -22,6 +22,7 @@ import com.burf.favdish.databinding.FragmentRandomDishBinding
 import com.burf.favdish.model.entities.FavDish
 import com.burf.favdish.model.entities.RandomDish
 import com.burf.favdish.utils.Constants
+import com.burf.favdish.utils.Helper
 import com.burf.favdish.viewmodel.FavDishViewModel
 import com.burf.favdish.viewmodel.FavDishViewModelFactory
 import com.burf.favdish.viewmodel.NotificationsViewModel
@@ -143,15 +144,7 @@ class RandomDishFragment : Fragment() {
         mBinding!!.tvIngredients.text = ingredients
 
         // The instruction or you can say the Cooking direction text is in the HTML format so we will you the fromHtml to populate it in the TextView.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mBinding!!.tvCookingDirection.text = Html.fromHtml(
-                recipe.instructions,
-                Html.FROM_HTML_MODE_COMPACT
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            mBinding!!.tvCookingDirection.text = Html.fromHtml(recipe.instructions)
-        }
+        mBinding!!.tvCookingDirection.text = Helper.stripHtml(recipe.instructions)
 
         mBinding!!.ivFavoriteDish.setImageDrawable(
             ContextCompat.getDrawable(
