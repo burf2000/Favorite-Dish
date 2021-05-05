@@ -52,4 +52,8 @@
 
     <string name="filter_dishes">Filter Dishes</string>
     <string name="select_item_to_filter">SELECT ITEM TO FILTER</string>
+    <string name="msg_added_to_favorites">Added to favorites</string>
+
+    <string name="msg_already_added_to_favorites">You have already added the dish to your favorites</string>
+    <string name="please_wait">Please wait</string>
 </resources>
