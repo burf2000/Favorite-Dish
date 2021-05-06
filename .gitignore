@@ -6,3 +6,13 @@
 .gradle/6.5/javaCompile/
 
 .gradle/buildOutputCleanup/
+
+.gradle/checksums/checksums.lock
+
+.gradle/checksums/md5-checksums.bin
+
+.gradle/checksums/sha1-checksums.bin
+
+.idea/caches/
+
+.idea/libraries/
