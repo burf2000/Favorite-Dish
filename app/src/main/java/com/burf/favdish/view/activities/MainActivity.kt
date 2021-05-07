@@ -13,6 +13,7 @@ import androidx.work.*
 import com.burf.favdish.R
 import com.burf.favdish.databinding.ActivityMainBinding
 import com.burf.favdish.model.notification.NotifyWorker
+import com.burf.favdish.utils.Constants
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +41,11 @@ class MainActivity : AppCompatActivity() {
         mBinding.navView.setupWithNavController(mNavControler)
 
         // Work manager
+        if (intent.hasExtra(Constants.NOTIFICATION_ID)) {
+            val notificationId = intent.getIntExtra(Constants.NOTIFICATION_ID, 0)
+            mBinding.navView.selectedItemId = R.id.navigation_random_dish
+        }
+
         startWork()
     }
 

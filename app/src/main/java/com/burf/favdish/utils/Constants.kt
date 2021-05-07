@@ -14,8 +14,13 @@ object Constants {
     const val ALL_ITEMS: String = "All"
     const val FILTER_SELECTION: String = "FilterSelection"
 
-    const val API_KEY: String = "apiKey"//"326ffe9aee2246dc8f23cd74fdd8ed9f"
+    // Notification
+    const val NOTIFICATION_ID = "FavDish_notification_id"
+    const val NOTIFICATION_NAME = "FavDish"
+    const val NOTIFICATION_CHANNEL = "FavDish_channel_01"
 
+    // API
+    const val API_KEY: String = "apiKey"
     const val API_ENDPOINT: String = "recipes/random"//"https://api.spoonacular.com/recipes/random"
     const val LIMIT_LICENCE: String = "limitLicence"
     const val TAGS: String = "tags"
